@@ -29,7 +29,7 @@ public class CookieHeaderProvider implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request.Builder builder = chain.request().newBuilder();
-
+        // 从sharePrefernces 获得的共享数据
         HashSet<String> preferences = (HashSet<String>) PreferenceManager.getDefaultSharedPreferences(context).getStringSet(PREF_COOKIES, new HashSet<String>());
 
         for (String cookie : preferences) {
