@@ -1,4 +1,4 @@
-package com.vstar.sacredsun_android_pda.rest;
+package com.vstar.sacredsun_android_pda;
 
 /**
  * Created by tanghuailong on 2017/1/12.
@@ -24,7 +24,8 @@ public class HttpMethods {
     private static final int DEFAULT_TIME = 5;
 
     private Retrofit retrofit;
-    private static Context context;
+    //获得全局的上下文
+    private static Context context = App.get();
 
     private HttpMethods() {
 
@@ -41,10 +42,7 @@ public class HttpMethods {
                 .build();
     }
 
-    public static void setContext(Context context) {
-        HttpMethods.context = context;
-    }
-
+   //单例模式
     public static class SingleHolder {
         private static final HttpMethods INSTANCE = new HttpMethods();
     }

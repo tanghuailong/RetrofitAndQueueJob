@@ -6,10 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.vstar.sacredsun_android_pda.rest.GithubApi;
-import com.vstar.sacredsun_android_pda.rest.HttpMethods;
-import com.vstar.sacredsun_android_pda.rest.User;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.testCookie)
     public void clickForTest(View view) {
         Log.d(LOG_TAG,"clickTestCookie");
-        HttpMethods.setContext(this);
         GithubApi api =  HttpMethods.getInstane().getService(GithubApi.class);
         retrofit2.Call<User> call = api.getUser("tanghuailong");
         call.enqueue(new Callback<User>() {
@@ -48,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
 
 
     }

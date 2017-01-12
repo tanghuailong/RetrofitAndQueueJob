@@ -1,4 +1,4 @@
-package com.vstar.sacredsun_android_pda.rest;
+package com.vstar.sacredsun_android_pda;
 
 import android.content.Context;
 import android.preference.PreferenceManager;

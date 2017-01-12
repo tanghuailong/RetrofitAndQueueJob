@@ -9,9 +9,15 @@ import com.facebook.stetho.Stetho;
  */
 
 public class App extends Application {
+    private static App instance;
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
+        //初始化调试工具
         Stetho.initializeWithDefaults(this);
+    }
+    public static App get(){
+        return instance;
     }
 }

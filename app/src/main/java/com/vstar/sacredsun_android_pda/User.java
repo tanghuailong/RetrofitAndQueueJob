@@ -1,4 +1,4 @@
-package com.vstar.sacredsun_android_pda.rest;
+package com.vstar.sacredsun_android_pda;
 
 /**
  * Created by tanghuailong on 2017/1/12.

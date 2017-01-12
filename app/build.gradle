@@ -44,7 +44,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:+'
     compile 'com.google.code.gson:gson:2.8.0'
     //job队列，缓存请求
-    compile 'com.path:android-priority-jobqueue:1.1.2'
+    compile 'com.birbit:android-priority-jobqueue:2.0.1'
     //网络调试
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
