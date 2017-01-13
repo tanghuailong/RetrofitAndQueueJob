@@ -2,6 +2,7 @@ package com.vstar.sacredsun_android_pda;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -9,9 +10,6 @@ import android.widget.Button;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,27 +22,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        getDpi();
     }
 
 
     @OnClick(R.id.testCookie)
     public void clickForTest(View view) {
         Log.d(LOG_TAG,"clickTestCookie");
-        GithubApi api =  HttpMethods.getInstane().getService(GithubApi.class);
-        retrofit2.Call<User> call = api.getUser("tanghuailong");
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                Log.d(LOG_TAG,response.toString());
-            }
+        AppJobManager.getJobManager().addJobInBackground(new OrderJob());
+    }
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-
-            }
-        });
-
-
-
+    public void getDpi() {
+        Log.d(LOG_TAG,"getDpi");
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        Log.d(LOG_TAG,metrics.toString());
     }
 }

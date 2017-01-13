@@ -52,5 +52,8 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
+    //job队列需要整合gms
+    compile 'com.google.android.gms:play-services-gcm:9.4.0'
+
     testCompile 'junit:junit:4.12'
 }

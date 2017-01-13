@@ -8,6 +8,9 @@ import com.birbit.android.jobqueue.JobManager;
 import com.birbit.android.jobqueue.config.Configuration;
 import com.birbit.android.jobqueue.log.CustomLogger;
 import com.birbit.android.jobqueue.scheduling.FrameworkJobSchedulerService;
+import com.birbit.android.jobqueue.scheduling.GcmJobSchedulerService;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 
 /**
@@ -18,12 +21,19 @@ import com.birbit.android.jobqueue.scheduling.FrameworkJobSchedulerService;
  */
 public class AppJobManager {
     private static JobManager mJobManager;
+    private static final String LOG_TAG = "AppJobManager";
 
     public static synchronized JobManager getJobManager() {
         return mJobManager;
     }
 
-    public static void configureJobManager(Context context){
+    public static synchronized JobManager getJobManager(Context context) {
+        if(mJobManager == null) {
+            configureJobManager(context);
+        }
+        return mJobManager;
+    }
+    public static synchronized void configureJobManager(Context context){
         if(mJobManager == null) {
             Configuration.Builder builder = new Configuration.Builder(context)
                     .minConsumerCount(1)    //至少有一个消费线程
@@ -51,11 +61,23 @@ public class AppJobManager {
                         public void e(String text, Object... args) {
                             Log.e(TAG,String.format(text,args));
                         }
+
+                        @Override
+                        public void v(String text, Object... args) {
+
+                        }
                     });
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                builder.scheduler(FrameworkJobSchedulerService.createSchedulerFor(context));
-            }
+                builder.scheduler(FrameworkJobSchedulerService.createSchedulerFor(context,AppJobService.class),true);
+            }else {
+                int enableGcm = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
 
+                Log.d(LOG_TAG,enableGcm + " "+ConnectionResult.SUCCESS);
+                if(enableGcm == ConnectionResult.SUCCESS) {
+                    builder.scheduler(GcmJobSchedulerService.createSchedulerFor(context,AppGcmJobService.class),true);
+                }
+            }
+            mJobManager = new JobManager(builder.build());
         }
     }
 

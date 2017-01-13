@@ -16,6 +16,7 @@ public class App extends Application {
         instance = this;
         //初始化调试工具
         Stetho.initializeWithDefaults(this);
+        AppJobManager.getJobManager(this);
     }
     public static App get(){
         return instance;
