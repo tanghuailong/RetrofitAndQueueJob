@@ -3,6 +3,7 @@ package com.vstar.sacredsun_android_pda;
 import android.app.Application;
 
 import com.facebook.stetho.Stetho;
+import com.vstar.sacredsun_android_pda.util.queue.AppJobManager;
 
 /**
  * Created by tanghuailong on 2017/1/12.

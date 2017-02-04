@@ -1,4 +1,4 @@
-package com.vstar.sacredsun_android_pda;
+package com.vstar.sacredsun_android_pda.util.queue;
 
 /**
  * Created by tanghuailong on 2017/1/13.

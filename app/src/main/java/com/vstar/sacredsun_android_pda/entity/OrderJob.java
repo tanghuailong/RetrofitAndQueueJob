@@ -1,4 +1,4 @@
-package com.vstar.sacredsun_android_pda;
+package com.vstar.sacredsun_android_pda.entity;
 
 
 import android.support.annotation.NonNull;
@@ -8,6 +8,9 @@ import android.util.Log;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
+import com.vstar.sacredsun_android_pda.service.GithubApi;
+import com.vstar.sacredsun_android_pda.util.rest.HttpMethods;
+import com.vstar.sacredsun_android_pda.util.queue.JobConstants;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -15,7 +18,7 @@ import retrofit2.Response;
 /**
  * Created by tanghuailong on 2017/1/12.
  */
-
+@Deprecated
 public class OrderJob extends Job {
 
     private static final String LOG_TAG = "OrderJob";

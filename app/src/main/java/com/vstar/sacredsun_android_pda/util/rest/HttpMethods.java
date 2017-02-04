@@ -1,4 +1,4 @@
-package com.vstar.sacredsun_android_pda;
+package com.vstar.sacredsun_android_pda.util.rest;
 
 /**
  * Created by tanghuailong on 2017/1/12.
@@ -7,6 +7,7 @@ package com.vstar.sacredsun_android_pda;
 import android.content.Context;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.vstar.sacredsun_android_pda.App;
 
 import java.util.concurrent.TimeUnit;
 

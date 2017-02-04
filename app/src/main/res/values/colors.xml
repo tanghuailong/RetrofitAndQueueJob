@@ -2,5 +2,33 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#FFFFFF</color>
+
+    <color name="primary">#E43F3F</color>
+    <color name="primary_dark">#E12929</color>
+    <color name="primary_darker">#CC1D1D</color>
+    <color name="accent">#FFFFFF</color>
+
+    <color name="black">#000000</color>
+    <color name="jet">#222222</color>
+    <color name="oil">#333333</color>
+    <color name="monsoon">#777777</color>
+    <color name="jumbo">#888888</color>
+    <color name="aluminum">#999999</color>
+    <color name="base">#AAAAAA</color>
+    <color name="iron">#CCCCCC</color>
+    <color name="white">#FFFFFF</color>
+
+
+    <!--背景颜色-->
+    <color name="custom_bg_color">#19ACCA</color>
+    <!--里面背景颜色-->
+    <color name="inner_bg_color">#333542</color>
+    <!--强调字体的颜色-->
+    <color name="emphasize_txt_color">#E9AA14</color>
+    <!--普通字体的颜色-->
+    <color name="normal_txt_color">#FFFFFF</color>
+    <!--输入框下划线的颜色-->
+    <color name="edit_text_line">#FFFFFF</color>
+
 </resources>

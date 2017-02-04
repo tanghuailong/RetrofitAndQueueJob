@@ -1,4 +1,4 @@
-package com.vstar.sacredsun_android_pda;
+package com.vstar.sacredsun_android_pda.util.queue;
 
 import android.content.Context;
 import android.os.Build;
@@ -19,6 +19,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 /**
  * job队列的配置类
  */
+@Deprecated
 public class AppJobManager {
     private static JobManager mJobManager;
     private static final String LOG_TAG = "AppJobManager";

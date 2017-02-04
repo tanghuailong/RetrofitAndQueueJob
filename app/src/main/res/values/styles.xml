@@ -1,11 +1,48 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
+
+    <!--全屏的theme-->
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:windowBackground">@color/primary</item>
+        <item name="colorControlNormal">@color/iron</item>
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlHighlight">@color/white</item>
+        <item name="android:textColorHint">@color/iron</item>
+        <item name="colorButtonNormal">@color/primary_darker</item>
+    </style>
+
+    <style name="normal_title">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/normal_txt_color</item>
+    </style>
+    <style name="normal_edit_text">、
+        <!--文本的颜色-->
+        <item name="android:textColor">@color/normal_txt_color</item>
+        <!--提示文本的颜色-->
+        <item name="android:textColorHint">@color/edit_text_line</item>
+        <!--&lt;!&ndash;文本被选中时颜色&ndash;&gt;-->
+        <!--<item name="android:textColorHighlight">@color/edit_text_line</item>-->
+        <!--&lt;!&ndash;输入模式&ndash;&gt;-->
+        <item name="android:digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890</item>
+        <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
+        <!--可以复制黏贴-->
+        <item name="android:textIsSelectable">true</item>
+    </style>
+    <style name="normal_login_text">
+        <!--文本的颜色-->
+        <item name="android:textColor">@color/normal_txt_color</item>
+        <!--提示文本的颜色-->
+        <item name="android:textColorHint">@color/edit_text_line</item>
     </style>
 
 </resources>

@@ -1,14 +1,16 @@
-package com.vstar.sacredsun_android_pda;
+package com.vstar.sacredsun_android_pda.util.queue;
 
 import android.support.annotation.NonNull;
 
 import com.birbit.android.jobqueue.JobManager;
-import com.birbit.android.jobqueue.scheduling.GcmJobSchedulerService;
+import com.birbit.android.jobqueue.scheduling.FrameworkJobSchedulerService;
 
 /**
  * Created by tanghuailong on 2017/1/13.
  */
-public class AppGcmJobService extends GcmJobSchedulerService {
+@Deprecated
+public class AppJobService extends FrameworkJobSchedulerService{
+
     @NonNull
     @Override
     protected JobManager getJobManager() {
