@@ -14,19 +14,15 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
 
-
-
-
-
     private static final String LOG_TAG = "LoginActivity";
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
-        ButterKnife.bind(this);
+         ButterKnife.bind(this);
 
     }
 }

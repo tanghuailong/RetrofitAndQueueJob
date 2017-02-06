@@ -1,16 +1,14 @@
 package com.vstar.sacredsun_android_pda.entity;
 
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.birbit.android.jobqueue.Job;
-import com.birbit.android.jobqueue.Params;
-import com.birbit.android.jobqueue.RetryConstraint;
+import com.path.android.jobqueue.Job;
+import com.path.android.jobqueue.Params;
 import com.vstar.sacredsun_android_pda.service.GithubApi;
+import com.vstar.sacredsun_android_pda.util.RxBus;
+import com.vstar.sacredsun_android_pda.util.queue.Priority;
 import com.vstar.sacredsun_android_pda.util.rest.HttpMethods;
-import com.vstar.sacredsun_android_pda.util.queue.JobConstants;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -25,14 +23,13 @@ public class OrderJob extends Job {
     private static final String TAG = OrderJob.class.getCanonicalName();
 
     public OrderJob() {
-        super(new Params(JobConstants.PRIORITY_NORMAL)
-                .requireNetwork()
-                .persist().addTags(TAG));
+        //groupBy用来保证顺序执行，具体参考文档
+        super(new Params(Priority.HIGH).requireNetwork().persist().groupBy("order"));
     }
 
     @Override
     public void onAdded() {
-        Log.d(LOG_TAG,"job success");
+        Log.d(LOG_TAG,"job is added");
     }
 
     @Override
@@ -44,22 +41,24 @@ public class OrderJob extends Job {
             throw new RuntimeException("response fail");
         }
         Log.d(LOG_TAG,response.body().toString());
+        RxBus.getDefault().post(new UserEvent());
     }
 
     @Override
-    protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
-        return RetryConstraint.RETRY;
+    protected void onCancel() {
+        Log.d(LOG_TAG,"job is cancel");
     }
 
+    /**
+     * 决定是否重新运行job
+     * @param throwable
+     * @return true 重新运行job false 运行onCancel()
+     */
     @Override
-    protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
-
+    protected boolean shouldReRunOnThrowable(Throwable throwable) {
+        Log.d(LOG_TAG,"retry");
+        return true;
     }
 
-   //默认重试次数为20次，表明在运行抛出异常默认重试20次
-//    @Override
-//    protected int getRetryLimit() {
-//        return Integer.MAX_VALUE;
-//    }
 }
 
