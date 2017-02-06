@@ -12,8 +12,8 @@ import com.vstar.sacredsun_android_pda.App;
 import com.vstar.sacredsun_android_pda.R;
 import com.vstar.sacredsun_android_pda.entity.OrderJob;
 import com.vstar.sacredsun_android_pda.entity.UserEvent;
-import com.vstar.sacredsun_android_pda.util.RxBus;
-import com.vstar.sacredsun_android_pda.util.RxHelper;
+import com.vstar.sacredsun_android_pda.util.rxjava.RxBus;
+import com.vstar.sacredsun_android_pda.util.rxjava.RxHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

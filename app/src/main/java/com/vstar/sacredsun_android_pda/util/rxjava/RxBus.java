@@ -1,4 +1,4 @@
-package com.vstar.sacredsun_android_pda.util;
+package com.vstar.sacredsun_android_pda.util.rxjava;
 
 /**
  * Created by tanghuailong on 2017/2/4.

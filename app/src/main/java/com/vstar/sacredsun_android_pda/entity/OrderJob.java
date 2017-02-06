@@ -6,7 +6,7 @@ import android.util.Log;
 import com.path.android.jobqueue.Job;
 import com.path.android.jobqueue.Params;
 import com.vstar.sacredsun_android_pda.service.GithubApi;
-import com.vstar.sacredsun_android_pda.util.RxBus;
+import com.vstar.sacredsun_android_pda.util.rxjava.RxBus;
 import com.vstar.sacredsun_android_pda.util.queue.Priority;
 import com.vstar.sacredsun_android_pda.util.rest.HttpMethods;
 

@@ -1,4 +1,4 @@
-package com.vstar.sacredsun_android_pda.util;
+package com.vstar.sacredsun_android_pda.util.rxjava;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
