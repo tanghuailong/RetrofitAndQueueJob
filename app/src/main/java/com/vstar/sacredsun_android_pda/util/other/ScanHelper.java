@@ -5,6 +5,8 @@ package com.vstar.sacredsun_android_pda.util.other;
  */
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
@@ -19,11 +21,11 @@ public class ScanHelper {
     private static final String deviceNumberRegex = "^G[12]\\w{2}$";
     //订单编号的长度
     private static final int orderNumberLength = 16;
-    //订单号长度
+    //订单号结束位置
     private static final int orderEnd = 9;
-    //流水号长度
+    //流水号开始位置
     private static final int serialNumberBegin = 16;
-    //物料编码长度
+    //物料编码开始位置
     private static final int materialNumberBegin = 10;
     //物料编号的前缀
     private static final String materialPrefix = "100";
@@ -125,11 +127,45 @@ public class ScanHelper {
     }
 
     /**
+     * 检测只剩最后一个待扫描
+     * @return
+     */
+    public static boolean isLastOneToScan(Context context,String... keys){
+        boolean isLastOne = false;
+        int notScanCount = keys.length;
+        for(String key:keys){
+            if(SPHelper.contains(context,key)) {
+                notScanCount--;
+            }
+        }
+        if(notScanCount == 1) {
+            isLastOne = true;
+        }
+        return isLastOne;
+    }
+    /**
      * 获取edittext中的字符串
      * @param editText
      * @return
      */
     public static String getScanText(EditText editText) {
         return editText.getText().toString().trim();
+    }
+
+    /**
+     * 显示Dialog
+     * @param title dialog的标题
+     * @param icon dialog的图标
+     * @param msg dialog的内容
+     * @param positiveListener 点击确认后操作
+     */
+    public static void showDialog(Context context,String title,int icon,String msg,DialogInterface.OnClickListener positiveListener) {
+        AlertDialog.Builder builder  = new AlertDialog.Builder(context);
+        builder.setTitle(title)
+                .setIcon(icon)
+                .setMessage(msg)
+                .setNegativeButton("取消",null)
+                .setPositiveButton("确定",positiveListener)
+                .show();
     }
 }

@@ -1,15 +1,17 @@
 package com.vstar.sacredsun_android_pda.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vstar.sacredsun_android_pda.R;
 import com.vstar.sacredsun_android_pda.util.other.CodeType;
+import com.vstar.sacredsun_android_pda.util.other.SPHelper;
 import com.vstar.sacredsun_android_pda.util.other.ScanHelper;
 
 import butterknife.BindView;
@@ -28,6 +30,20 @@ public class CodeScanActivity extends AppCompatActivity {
     TextView txtManual;
     @BindView(R.id.scan_code)
     EditText scanCode;
+    @BindView(R.id.order_sign_img)
+    ImageView orderSignImg;
+    @BindView(R.id.order_sign_txt)
+    TextView orderSignTxt;
+    @BindView(R.id.device_sign_img)
+    ImageView deviceSignImg;
+    @BindView(R.id.device_sign_txt)
+    TextView deviceSignTxt;
+    @BindView(R.id.btn_scan_again)
+    Button btnScanAgain;
+
+    private String recentOperation = "";
+
+    private static final String LOG_TAG = "CodeScanActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,11 +55,60 @@ public class CodeScanActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_commit)
     public void commitMessage() {
-        CodeType result = ScanHelper.judgeCodeNumber(ScanHelper.getScanText(scanCode));
-        if(result.equals())
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String scanResult = ScanHelper.getScanText(scanCode);
+        CodeType result = ScanHelper.judgeCodeNumber(scanResult);
+        switch (result) {
+            case ORDER:
+                DialogInterface.OnClickListener orderListener= (dialog,which) -> {
+                    orderSignImg.setImageResource(R.drawable.complete);
+                    orderSignTxt.setText(R.string.order_scan_complete);
+                    SPHelper.putAndApply(CodeScanActivity.this,"order",scanResult);
+                    if(ScanHelper.isLastOneToScan(CodeScanActivity.this,"order","device")){
+                        btnCommit.setText("绑定");
+                    }
+                    recentOperation = "order";
+                };
+                ScanHelper.showDialog(CodeScanActivity.this,"订单",R.drawable.submit,"扫描结果:"+scanResult+" 确认提交?",orderListener);
+                break;
+            case DEVICE:
+                DialogInterface.OnClickListener deviceListener= (dialog,which) -> {
+                    deviceSignImg.setImageResource(R.drawable.complete);
+                    deviceSignTxt.setText(R.string.order_scan_complete);
+                    SPHelper.putAndApply(CodeScanActivity.this,"device",scanResult);
+                    if(ScanHelper.isLastOneToScan(CodeScanActivity.this,"order","device")){
+                        btnCommit.setText("绑定");
+                    }
+                    recentOperation = "device";
+                };
+                ScanHelper.showDialog(CodeScanActivity.this,"设备",R.drawable.submit,"扫描结果:"+scanResult+" 确认提交?",deviceListener);
+                break;
+            default:
+                ScanHelper.showDialog(CodeScanActivity.this,"未知",R.drawable.error,"无效的扫描结果:"+scanResult,null);
+                scanCode.getText().clear();
+                break;
+        }
     }
 
+    /**
+     * 重新扫描
+     */
+    @OnClick(R.id.btn_scan_again)
+    public void scanAgain() {
+        DialogInterface.OnClickListener againListener= (dialog,which) -> {
+           switch (recentOperation) {
+               case "order":
+                   SPHelper.remove(CodeScanActivity.this,"order");
+                   break;
+               case "device":
+                   SPHelper.remove(CodeScanActivity.this,"device");
+                   break;
+               default:
+                   break;
+           }
+        };
+        ScanHelper.showDialog(CodeScanActivity.this,"消除",R.drawable.warning,"是否要清除之前扫描的结果?",againListener);
+
+    }
     /**
      * 切换为手动模式
      */
@@ -51,6 +116,4 @@ public class CodeScanActivity extends AppCompatActivity {
     public void switchManualMode() {
         ScanHelper.changeToManualInput(CodeScanActivity.this,scanCode);
     }
-
-
 }
