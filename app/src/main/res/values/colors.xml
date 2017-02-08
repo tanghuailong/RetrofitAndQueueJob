@@ -38,4 +38,6 @@
     <!--输入框下划线的颜色-->
     <color name="edit_text_line">#FFFFFF</color>
 
+    <color name="card_bg_color">#448AFF</color>
+
 </resources>
