@@ -6,11 +6,16 @@ package com.vstar.sacredsun_android_pda.util.other;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.vstar.sacredsun_android_pda.R;
 
 /**
  * 用于扫描处理的工具类
@@ -20,7 +25,7 @@ public class ScanHelper {
     //固化设备编号的规则，G开头,后面跟着1或者2，最后紧接两位编号(字母数字汉字都可)
     private static final String deviceNumberRegex = "^G[12]\\w{2}$";
     //订单编号的长度
-    private static final int orderNumberLength = 16;
+    private static final int orderNumberLength = 19;
     //订单号结束位置
     private static final int orderEnd = 9;
     //流水号开始位置
@@ -167,5 +172,37 @@ public class ScanHelper {
                 .setNegativeButton("取消",null)
                 .setPositiveButton("确定",positiveListener)
                 .show();
+    }
+
+    /**
+     * 修改页面上组件的状态
+     * @param context
+     * @param imageView
+     * @param textView
+     * @param status
+     */
+    public static void changeStateCompoment(Context context,ImageView imageView, TextView textView,StatusCompoment status) {
+        switch (status) {
+            case ORDER_COMPLEMENT:
+                imageView.setImageResource(R.drawable.complete);
+                textView.setText(context.getString(R.string.order_scan_complete));
+                textView.setTextColor(ContextCompat.getColor(context,R.color.state_complete));
+                break;
+            case ORDER_INCOMPLEMENT:
+                imageView.setImageResource(R.drawable.incomplete);
+                textView.setText(context.getString(R.string.order_scan_incomplete));
+                textView.setTextColor(ContextCompat.getColor(context,R.color.state_incomplete));
+                break;
+            case DEVICE_COMPLEMENT:
+                imageView.setImageResource(R.drawable.complete);
+                textView.setText(context.getString(R.string.device_scan_complete));
+                textView.setTextColor(ContextCompat.getColor(context,R.color.state_complete));
+                break;
+            case DEVICE_INCOMPLEMENT:
+                imageView.setImageResource(R.drawable.incomplete);
+                textView.setText(context.getString(R.string.device_scan_incomplete));
+                textView.setTextColor(ContextCompat.getColor(context,R.color.state_incomplete));
+                break;
+        }
     }
 }

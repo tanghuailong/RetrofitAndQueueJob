@@ -14,6 +14,7 @@ import com.vstar.sacredsun_android_pda.R;
 import com.vstar.sacredsun_android_pda.util.other.CodeType;
 import com.vstar.sacredsun_android_pda.util.other.SPHelper;
 import com.vstar.sacredsun_android_pda.util.other.ScanHelper;
+import com.vstar.sacredsun_android_pda.util.other.StatusCompoment;
 
 import java.util.Stack;
 
@@ -64,10 +65,9 @@ public class CodeScanActivity extends AppCompatActivity {
         switch (result) {
             case ORDER:
                 DialogInterface.OnClickListener orderListener= (dialog,which) -> {
-                    operation.push(Pair.create("order","订单"));
-                    orderSignImg.setImageResource(R.drawable.complete);
-                    orderSignTxt.setText(R.string.order_scan_complete);
-                    SPHelper.putAndApply(CodeScanActivity.this,"order",scanResult);
+                    operation.push(Pair.create(getString(R.string.ORDER),getString(R.string.ORDER_DESC)));
+                    ScanHelper.changeStateCompoment(CodeScanActivity.this,orderSignImg,orderSignTxt, StatusCompoment.ORDER_COMPLEMENT);
+                    SPHelper.putAndApply(CodeScanActivity.this,getString(R.string.ORDER),scanResult);
                     if(operation.size() == 1) {
                         btnCommit.setText("绑定");
                     }
@@ -76,11 +76,10 @@ public class CodeScanActivity extends AppCompatActivity {
                 ScanHelper.showDialog(CodeScanActivity.this,"订单",R.drawable.submit,"扫描结果:"+scanResult+" 确认提交?",orderListener);
                 break;
             case DEVICE:
-                DialogInterface.OnClickListener deviceListener= (dialog,which) -> {
-                    operation.push(Pair.create("device","设备"));
-                    deviceSignImg.setImageResource(R.drawable.complete);
-                    deviceSignTxt.setText(R.string.order_scan_complete);
-                    SPHelper.putAndApply(CodeScanActivity.this,"device",scanResult);
+                DialogInterface.OnClickListener deviceListener= (dialog,which)  -> {
+                    operation.push(Pair.create(getString(R.string.DEVICE),getString(R.string.DEVICE_DESC)));
+                    ScanHelper.changeStateCompoment(CodeScanActivity.this,deviceSignImg,deviceSignTxt, StatusCompoment.DEVICE_COMPLEMENT);
+                    SPHelper.putAndApply(CodeScanActivity.this,getString(R.string.DEVICE),scanResult);
                     if(operation.size() == 1) {
                         btnCommit.setText("绑定");
                     }
@@ -102,8 +101,14 @@ public class CodeScanActivity extends AppCompatActivity {
     public void scanAgain() {
         DialogInterface.OnClickListener againListener= (dialog,which) -> {
             if(!operation.isEmpty()) {
+                btnCommit.setText("确定");
                 Pair<String,String> pair = operation.pop();
                 SPHelper.remove(CodeScanActivity.this,pair.first);
+                if(pair.first.equals(getString(R.string.ORDER))) {
+                    ScanHelper.changeStateCompoment(CodeScanActivity.this,orderSignImg,orderSignTxt, StatusCompoment.ORDER_INCOMPLEMENT);
+                }else if(pair.first.equals(getString(R.string.DEVICE))) {
+                    ScanHelper.changeStateCompoment(CodeScanActivity.this,deviceSignImg,deviceSignTxt, StatusCompoment.DEVICE_INCOMPLEMENT);
+                }
             }
         };
         if(!operation.isEmpty()) {
@@ -118,5 +123,15 @@ public class CodeScanActivity extends AppCompatActivity {
     @OnClick(R.id.txt_manual)
     public void switchManualMode() {
         ScanHelper.changeToManualInput(CodeScanActivity.this,scanCode);
+    }
+
+    /**
+     * 为了和Operation队列保持一致，退出时要清除数据保存的数据
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SPHelper.remove(CodeScanActivity.this,getString(R.string.ORDER));
+        SPHelper.remove(CodeScanActivity.this,getString(R.string.DEVICE));
     }
 }

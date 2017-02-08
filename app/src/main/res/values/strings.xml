@@ -21,4 +21,18 @@
     <string name="start_binding">开始绑定</string>
     <string name="order_binding">订单绑定</string>
     <string name="order_unbind">订单解绑</string>
+
+    <!--使用到的常量-->
+
+    <!--司机-->
+    <string name="DRIVER">driver_session</string>
+    <!--工人-->
+    <string name="WORKER">worker_session</string>
+    <!--订单-->
+    <string name="ORDER">order</string>
+    <!--设备-->
+    <string name="DEVICE">device</string>
+    <string name="ORDER_UNBIND">order_unbind</string>
+    <string name="ORDER_DESC">订单</string>
+    <string name="DEVICE_DESC">设备</string>
 </resources>

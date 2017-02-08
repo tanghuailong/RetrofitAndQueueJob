@@ -11,12 +11,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
         android:name=".App">
-        <activity android:name=".ui.CodeScanActivity"
+        <activity android:name=".ui.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.LoginActivity"></activity>
+        <activity android:name=".ui.CodeScanActivity"></activity>
+        <activity android:name=".ui.DeviceScanActivity"></activity>
+
     </application>
 </manifest>

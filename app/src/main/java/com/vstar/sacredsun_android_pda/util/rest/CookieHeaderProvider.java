@@ -1,7 +1,6 @@
 package com.vstar.sacredsun_android_pda.util.rest;
 
 import android.content.Context;
-import android.preference.PreferenceManager;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -30,11 +29,14 @@ public class CookieHeaderProvider implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request.Builder builder = chain.request().newBuilder();
         // 从sharePrefernces 获得的共享数据
-        HashSet<String> preferences = (HashSet<String>) PreferenceManager.getDefaultSharedPreferences(context).getStringSet(PREF_COOKIES, new HashSet<String>());
-
+//        HashSet<String> preferences = (HashSet<String>) PreferenceManager.getDefaultSharedPreferences(context).getStringSet(PREF_COOKIES, new HashSet<String>());
+HashSet<String> preferences = new HashSet<>();
+        preferences.add("test1");
+        preferences.add("test2");
         for (String cookie : preferences) {
             builder.addHeader("Cookie", cookie);
         }
+
         return chain.proceed(builder.build());
     }
 }
