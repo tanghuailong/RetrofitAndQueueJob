@@ -1,19 +1,14 @@
 package com.vstar.sacredsun_android_pda.ui;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.vstar.sacredsun_android_pda.R;
-import com.vstar.sacredsun_android_pda.service.GithubApi;
 import com.vstar.sacredsun_android_pda.util.other.SPHelper;
-import com.vstar.sacredsun_android_pda.util.other.ScanHelper;
-import com.vstar.sacredsun_android_pda.util.rest.HttpMethods;
-import com.vstar.sacredsun_android_pda.util.rxjava.RxHelper;
+import com.vstar.sacredsun_android_pda.util.other.FunctionUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,23 +28,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FunctionUtil.checkIsLogin(this);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        Log.d(LOG_TAG,"onCreate");
     }
 
 
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Log.d(LOG_TAG,"configuration change");
-    }
 
     @OnClick(R.id.btn_login_out)
     public void loginOut() {
 
-        ScanHelper.showDialog(MainActivity.this,"登出",R.drawable.allow,"确认要退出登陆么?",null);
+        FunctionUtil.showDialog(MainActivity.this,"登出",R.drawable.allow,"确认要退出登陆么?",null);
 
         //删除司机和工人的session
         SPHelper.remove(MainActivity.this,getString(R.string.WORKER));
@@ -74,14 +64,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.order_unbind)
     public void orderUnbind() {
-//        Intent intent = new Intent(MainActivity.this,DeviceScanActivity.class);
-//        startActivity(intent);
-        HttpMethods.getInstane().getService(GithubApi.class).getUser("tanghuailong")
-                .compose(RxHelper.io_main())
-                .subscribe((r -> {
-                    Log.d(LOG_TAG,r.toString());
-                }),(e) -> {
-                    e.printStackTrace();
-                });
+        Intent intent = new Intent(MainActivity.this,DeviceScanActivity.class);
+        startActivity(intent);
     }
 }

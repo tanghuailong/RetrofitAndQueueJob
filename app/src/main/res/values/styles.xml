@@ -21,6 +21,10 @@
         <item name="android:textColorHint">@color/normal_txt_color</item>
     </style>
 
+    <style name="SplashTheme" parent="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+        <item name="android:windowBackground">@drawable/bg_spalsh</item>
+    </style>
+
     <style name="normal_title">
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/normal_txt_color</item>

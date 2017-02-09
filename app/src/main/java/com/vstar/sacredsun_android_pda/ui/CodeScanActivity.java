@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.vstar.sacredsun_android_pda.R;
 import com.vstar.sacredsun_android_pda.util.other.CodeType;
 import com.vstar.sacredsun_android_pda.util.other.SPHelper;
-import com.vstar.sacredsun_android_pda.util.other.ScanHelper;
+import com.vstar.sacredsun_android_pda.util.other.FunctionUtil;
 import com.vstar.sacredsun_android_pda.util.other.StatusCompoment;
 
 import java.util.Stack;
@@ -60,35 +60,35 @@ public class CodeScanActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_commit)
     public void commitMessage() {
-        String scanResult = ScanHelper.getScanText(scanCode);
-        CodeType result = ScanHelper.judgeCodeNumber(scanResult);
+        String scanResult = FunctionUtil.getScanText(scanCode);
+        CodeType result = FunctionUtil.judgeCodeNumber(scanResult);
         switch (result) {
             case ORDER:
                 DialogInterface.OnClickListener orderListener= (dialog,which) -> {
                     operation.push(Pair.create(getString(R.string.ORDER),getString(R.string.ORDER_DESC)));
-                    ScanHelper.changeStateCompoment(CodeScanActivity.this,orderSignImg,orderSignTxt, StatusCompoment.ORDER_COMPLEMENT);
+                    FunctionUtil.changeStateCompoment(CodeScanActivity.this,orderSignImg,orderSignTxt, StatusCompoment.ORDER_COMPLEMENT);
                     SPHelper.putAndApply(CodeScanActivity.this,getString(R.string.ORDER),scanResult);
                     if(operation.size() == 1) {
                         btnCommit.setText("绑定");
                     }
                     scanCode.getText().clear();
                 };
-                ScanHelper.showDialog(CodeScanActivity.this,"订单",R.drawable.submit,"扫描结果:"+scanResult+" 确认提交?",orderListener);
+                FunctionUtil.showDialog(CodeScanActivity.this,"订单",R.drawable.submit,"扫描结果:"+scanResult+" 确认提交?",orderListener);
                 break;
             case DEVICE:
                 DialogInterface.OnClickListener deviceListener= (dialog,which)  -> {
                     operation.push(Pair.create(getString(R.string.DEVICE),getString(R.string.DEVICE_DESC)));
-                    ScanHelper.changeStateCompoment(CodeScanActivity.this,deviceSignImg,deviceSignTxt, StatusCompoment.DEVICE_COMPLEMENT);
+                    FunctionUtil.changeStateCompoment(CodeScanActivity.this,deviceSignImg,deviceSignTxt, StatusCompoment.DEVICE_COMPLEMENT);
                     SPHelper.putAndApply(CodeScanActivity.this,getString(R.string.DEVICE),scanResult);
                     if(operation.size() == 1) {
                         btnCommit.setText("绑定");
                     }
                     scanCode.getText().clear();
                 };
-                ScanHelper.showDialog(CodeScanActivity.this,"设备",R.drawable.submit,"扫描结果:"+scanResult+" 确认提交?",deviceListener);
+                FunctionUtil.showDialog(CodeScanActivity.this,"设备",R.drawable.submit,"扫描结果:"+scanResult+" 确认提交?",deviceListener);
                 break;
             default:
-                ScanHelper.showDialog(CodeScanActivity.this,"未知",R.drawable.error,"无效的扫描结果:"+scanResult,null);
+                FunctionUtil.showDialog(CodeScanActivity.this,"未知",R.drawable.error,"无效的扫描结果:"+scanResult,null);
                 scanCode.getText().clear();
                 break;
         }
@@ -105,16 +105,16 @@ public class CodeScanActivity extends AppCompatActivity {
                 Pair<String,String> pair = operation.pop();
                 SPHelper.remove(CodeScanActivity.this,pair.first);
                 if(pair.first.equals(getString(R.string.ORDER))) {
-                    ScanHelper.changeStateCompoment(CodeScanActivity.this,orderSignImg,orderSignTxt, StatusCompoment.ORDER_INCOMPLEMENT);
+                    FunctionUtil.changeStateCompoment(CodeScanActivity.this,orderSignImg,orderSignTxt, StatusCompoment.ORDER_INCOMPLEMENT);
                 }else if(pair.first.equals(getString(R.string.DEVICE))) {
-                    ScanHelper.changeStateCompoment(CodeScanActivity.this,deviceSignImg,deviceSignTxt, StatusCompoment.DEVICE_INCOMPLEMENT);
+                    FunctionUtil.changeStateCompoment(CodeScanActivity.this,deviceSignImg,deviceSignTxt, StatusCompoment.DEVICE_INCOMPLEMENT);
                 }
             }
         };
         if(!operation.isEmpty()) {
-            ScanHelper.showDialog(CodeScanActivity.this, "消除", R.drawable.warning, "是否要清除" + operation.peek().second + "的扫描结果?", againListener);
+            FunctionUtil.showDialog(CodeScanActivity.this, "消除", R.drawable.warning, "是否要清除" + operation.peek().second + "的扫描结果?", againListener);
         }else{
-            ScanHelper.showDialog(CodeScanActivity.this, "消除", R.drawable.warning, "无最近操作记录", null);
+            FunctionUtil.showDialog(CodeScanActivity.this, "消除", R.drawable.warning, "无最近操作记录", null);
         }
     }
     /**
@@ -122,7 +122,7 @@ public class CodeScanActivity extends AppCompatActivity {
      */
     @OnClick(R.id.txt_manual)
     public void switchManualMode() {
-        ScanHelper.changeToManualInput(CodeScanActivity.this,scanCode);
+        FunctionUtil.changeToManualInput(CodeScanActivity.this,scanCode);
     }
 
     /**

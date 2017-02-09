@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.vstar.sacredsun_android_pda.R;
 import com.vstar.sacredsun_android_pda.util.other.CodeType;
 import com.vstar.sacredsun_android_pda.util.other.SPHelper;
-import com.vstar.sacredsun_android_pda.util.other.ScanHelper;
+import com.vstar.sacredsun_android_pda.util.other.FunctionUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,8 +44,8 @@ public class DeviceScanActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_commit)
     public void orderUnbind() {
-        String scanResult = ScanHelper.getScanText(scanCode);
-        CodeType result = ScanHelper.judgeCodeNumber(scanResult);
+        String scanResult = FunctionUtil.getScanText(scanCode);
+        CodeType result = FunctionUtil.judgeCodeNumber(scanResult);
 
         DialogInterface.OnClickListener deviceListener = (dialog, which) -> {
             //TODO 做一些网络处理
@@ -56,9 +56,9 @@ public class DeviceScanActivity extends AppCompatActivity {
         };
 
         if(result == CodeType.DEVICE) {
-            ScanHelper.showDialog(DeviceScanActivity.this, "设备", R.drawable.warning, "扫描结果:" + scanResult + " 确认解绑?", deviceListener);
+            FunctionUtil.showDialog(DeviceScanActivity.this, "设备", R.drawable.warning, "扫描结果:" + scanResult + " 确认解绑?", deviceListener);
         }else {
-            ScanHelper.showDialog(DeviceScanActivity.this, "未知", R.drawable.warning, "无效的扫描结果", invalidListener);
+            FunctionUtil.showDialog(DeviceScanActivity.this, "未知", R.drawable.warning, "无效的扫描结果", invalidListener);
         }
     }
 
@@ -72,7 +72,7 @@ public class DeviceScanActivity extends AppCompatActivity {
      */
     @OnClick(R.id.txt_manual)
     public void switchManualMode() {
-        ScanHelper.changeToManualInput(DeviceScanActivity.this,scanCode);
+        FunctionUtil.changeToManualInput(DeviceScanActivity.this,scanCode);
     }
 
     @Override

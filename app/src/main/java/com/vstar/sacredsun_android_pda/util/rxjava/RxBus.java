@@ -33,7 +33,8 @@ public class RxBus {
     public void post(Object o) {
         bus.onNext(o);
     }
-    //返回给观察者
+
+    //返回给观察者 ofType = filter + cast
     public <T> Observable<T> tObservable(Class<T> eventType) {
         return bus.ofType(eventType);
     }

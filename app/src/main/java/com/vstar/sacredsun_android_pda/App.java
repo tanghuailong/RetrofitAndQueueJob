@@ -31,9 +31,6 @@ public class App extends Application {
         //AppJobManager.getJobManager(this);
         configureJobManager();
     }
-    public static App get(){
-        return instance;
-    }
 
     public static App getInstance() {
         return instance;

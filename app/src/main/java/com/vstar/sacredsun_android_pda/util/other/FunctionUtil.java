@@ -18,9 +18,9 @@ import android.widget.TextView;
 import com.vstar.sacredsun_android_pda.R;
 
 /**
- * 用于扫描处理的工具类
+ * 一些功能的工具类
  */
-public class ScanHelper {
+public class FunctionUtil {
 
     //固化设备编号的规则，G开头,后面跟着1或者2，最后紧接两位编号(字母数字汉字都可)
     private static final String deviceNumberRegex = "^G[12]\\w{2}$";
@@ -205,4 +205,6 @@ public class ScanHelper {
                 break;
         }
     }
+
+
 }

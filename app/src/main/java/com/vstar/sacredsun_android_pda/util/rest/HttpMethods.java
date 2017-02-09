@@ -8,6 +8,7 @@ import android.content.Context;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.vstar.sacredsun_android_pda.App;
+import com.vstar.sacredsun_android_pda.R;
 
 import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
@@ -23,7 +24,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.internal.platform.Platform;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 访问网络的工具类
@@ -31,23 +31,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HttpMethods {
 
     //配置参数
-    private static final String BASE_URL = "https://api.github.com/";
     private static final int DEFAULT_TIME = 5;
 
     private Retrofit retrofit;
     //获得全局的上下文
-    private static Context context = App.get();
+    private static Context context = App.getInstance();
 
     private HttpMethods() {
 
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
-        OkHttpClient client = getUnsafeOkHttpClient();
         retrofit = new Retrofit.Builder()
-                .client(client)
+                .client(getUnsafeOkHttpClient())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BASE_URL)
+                .addConverterFactory(ResponseConvertFactory.create())
+                .baseUrl(context.getString(R.string.BASE_URL))
                 .build();
     }
 
@@ -70,7 +66,7 @@ public class HttpMethods {
      */
     private static OkHttpClient getUnsafeOkHttpClient() {
         try {
-            // Create a trust manager that does not validate certificate chains
+            // 创建一个不验证证书的管理者
             final TrustManager[] trustAllCerts = new TrustManager[] {
                     new X509TrustManager() {
                         @Override
@@ -88,10 +84,10 @@ public class HttpMethods {
                     }
             };
 
-            // Install the all-trusting trust manager
+            // 按照所有信任的管理者
             final SSLContext sslContext = SSLContext.getInstance("SSL");
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-            // Create an ssl socket factory with our all-trusting manager
+            // 创建一个sslSocketFactory
             final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
             X509TrustManager trustManager = Platform.get().trustManager(sslSocketFactory);
 
