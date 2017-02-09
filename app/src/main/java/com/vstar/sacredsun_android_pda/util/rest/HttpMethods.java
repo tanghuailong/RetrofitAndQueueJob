@@ -20,6 +20,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
+import okhttp3.internal.platform.Platform;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -40,10 +41,6 @@ public class HttpMethods {
     private HttpMethods() {
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        //添加网络调试工具设置cookie和设置超时时间
-//        OkHttpClient client = builder.addNetworkInterceptor(new StethoInterceptor()).
-//                addInterceptor(new CookieHeaderProvider(context)).
-//                connectTimeout(DEFAULT_TIME, TimeUnit.SECONDS).build();
 
         OkHttpClient client = getUnsafeOkHttpClient();
         retrofit = new Retrofit.Builder()
@@ -58,6 +55,7 @@ public class HttpMethods {
     public static class SingleHolder {
         private static final HttpMethods INSTANCE = new HttpMethods();
     }
+
     public static HttpMethods getInstane(){
         return SingleHolder.INSTANCE;
     }
@@ -66,6 +64,10 @@ public class HttpMethods {
         return retrofit.create(tClass);
     }
 
+    /**
+     * 对SSL连接不进行验证
+     * @return
+     */
     private static OkHttpClient getUnsafeOkHttpClient() {
         try {
             // Create a trust manager that does not validate certificate chains
@@ -91,9 +93,10 @@ public class HttpMethods {
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
             // Create an ssl socket factory with our all-trusting manager
             final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+            X509TrustManager trustManager = Platform.get().trustManager(sslSocketFactory);
 
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.sslSocketFactory(sslSocketFactory);
+            builder.sslSocketFactory(sslSocketFactory,trustManager);
             builder.hostnameVerifier(new HostnameVerifier() {
                 @Override
                 public boolean verify(String hostname, SSLSession session) {
