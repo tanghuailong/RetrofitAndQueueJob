@@ -206,5 +206,19 @@ public class FunctionUtil {
         }
     }
 
+    /**
+     * 获取启动模式
+     * @param context
+     * @return
+     */
+    public static StartMode getStartMode(Context context) {
 
+        if((Boolean)SPHelper.get(context,context.getString(R.string.FIRST_USE),false).equals(false)) {
+            return StartMode.NO_SETTING;
+        }else if(SPHelper.get(context,context.getString(R.string.IS_LOGIN),false).equals(false)){
+            return StartMode.NO_LOGIN;
+        } else  {
+            return StartMode.NORMAL;
+        }
+    }
 }

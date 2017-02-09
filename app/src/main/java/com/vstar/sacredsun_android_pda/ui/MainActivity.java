@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FunctionUtil.checkIsLogin(this);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
     }
@@ -46,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         SPHelper.remove(MainActivity.this,getString(R.string.DRIVER));
         //跳转到登陆页面 保证之前的Activity不能被返回
         Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
     }
 
     /**
