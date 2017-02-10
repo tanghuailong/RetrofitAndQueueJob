@@ -5,6 +5,7 @@ package com.vstar.sacredsun_android_pda.service;
  */
 
 
+import com.vstar.sacredsun_android_pda.entity.EmptyResult;
 import com.vstar.sacredsun_android_pda.entity.HttpResult;
 import com.vstar.sacredsun_android_pda.entity.LoginEntity;
 
@@ -25,7 +26,7 @@ public interface PDAApi {
      * @return
      */
     @GET("staffmgt/control/clientLogin")
-    Observable<HttpResult<LoginEntity,?>> userLogin(@Query("userLoginId") String userLoginId, @Query("password")String password, @Query("workCenterCode")String workCenterCode);
+    Observable<HttpResult<LoginEntity,EmptyResult>> userLogin(@Query("userLoginId") String userLoginId, @Query("password")String password, @Query("workCenterCode")String workCenterCode);
     /**
      * 用户登出
      * @param session 登陆时获取到的session

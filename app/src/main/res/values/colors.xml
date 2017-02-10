@@ -41,4 +41,9 @@
 
     <color name="card_bg_color">#448AFF</color>
 
+    <color name="snack_fail_bg">#FA4722</color>
+    <color name="snack_fail_hint">#FCCC10</color>
+    <color name="snack_success_bg">#0386F6</color>
+    <color name="snack_success_hint">#ffffff</color>
+
 </resources>

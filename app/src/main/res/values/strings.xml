@@ -29,6 +29,7 @@
 
     <string name="validate_empty">不能为空</string>
     <string name="validate_only_numchar">只能为字母数字,不能为其他字符</string>
+    <string name="login_fail">登陆失败,请检查网络</string>
 
 
     <!--程序中使用到的常量-->
