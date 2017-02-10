@@ -1,5 +1,6 @@
 package com.vstar.sacredsun_android_pda.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 
 import com.vstar.sacredsun_android_pda.R;
 import com.vstar.sacredsun_android_pda.service.PDAApi;
+import com.vstar.sacredsun_android_pda.util.other.ConstantPDA;
 import com.vstar.sacredsun_android_pda.util.other.FunctionUtil;
 import com.vstar.sacredsun_android_pda.util.other.SPHelper;
 import com.vstar.sacredsun_android_pda.util.rest.HttpMethods;
@@ -44,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     CoordinatorLayout loginContainer;
 
     private static String workCenterCode = "";
+    private int next_login_user = ConstantPDA.WORKER;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,7 +108,11 @@ public class LoginActivity extends AppCompatActivity {
                     .userLogin(username,password,workCenterCode)
                     .compose(RxHelper.io_main())
                     .subscribe((next) -> {
-
+                        if(next_login_user == ConstantPDA.WORKER) {
+                            workerLoginSuccess(next.getItem().getSession());
+                        }else if(next_login_user == ConstantPDA.DRIVER){
+                            driverLoginSuccess(next.getItem().getSession());
+                        }
                     },(e) -> {
                         FunctionUtil.showSnackBar(LoginActivity.this,loginContainer,getString(R.string.login_fail),1);
                         e.printStackTrace();
@@ -135,5 +142,21 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
+    private void workerLoginSuccess(String session) {
+        if(!TextUtils.isEmpty(session)) {
+            SPHelper.putAndApply(LoginActivity.this,getString(R.string.WORKER_SESSION),session);
+            editText_user.getText().clear();
+            editText_pwd.getText().clear();
+            editText_user.setHint(getString(R.string.login_driver));
+            next_login_user = ConstantPDA.DRIVER;
+        }
+    }
+    private void driverLoginSuccess(String session) {
+        if(!TextUtils.isEmpty(session)) {
+            SPHelper.putAndApply(LoginActivity.this,getString(R.string.DRIVER_SESSION),session);
+            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 }
