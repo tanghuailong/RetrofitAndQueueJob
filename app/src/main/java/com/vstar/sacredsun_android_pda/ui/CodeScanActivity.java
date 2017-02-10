@@ -60,7 +60,7 @@ public class CodeScanActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_commit)
     public void commitMessage() {
-        String scanResult = FunctionUtil.getScanText(scanCode);
+        String scanResult = FunctionUtil.getEditText(scanCode);
         CodeType result = FunctionUtil.judgeCodeNumber(scanResult);
         switch (result) {
             case ORDER:

@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
         FunctionUtil.showDialog(MainActivity.this,"登出",R.drawable.allow,"确认要退出登陆么?",null);
 
         //删除司机和工人的session
-        SPHelper.remove(MainActivity.this,getString(R.string.WORKER));
-        SPHelper.remove(MainActivity.this,getString(R.string.DRIVER));
+        SPHelper.remove(MainActivity.this,getString(R.string.DRIVER_SESSION));
+        SPHelper.remove(MainActivity.this,getString(R.string.WORKER_SESSION));
         //跳转到登陆页面 保证之前的Activity不能被返回
         Intent intent = new Intent(MainActivity.this,LoginActivity.class);
         startActivity(intent);

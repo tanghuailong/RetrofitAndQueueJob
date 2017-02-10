@@ -19,6 +19,7 @@
         <item name="android:icon">@color/icons</item>
         <item name="android:divider">@color/divider</item>
         <item name="android:textColorHint">@color/normal_txt_color</item>
+        <item name="colorButtonNormal">@color/buttonnormal</item>
     </style>
 
     <style name="SplashTheme" parent="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">

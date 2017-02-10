@@ -44,7 +44,7 @@ public class DeviceScanActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_commit)
     public void orderUnbind() {
-        String scanResult = FunctionUtil.getScanText(scanCode);
+        String scanResult = FunctionUtil.getEditText(scanCode);
         CodeType result = FunctionUtil.judgeCodeNumber(scanResult);
 
         DialogInterface.OnClickListener deviceListener = (dialog, which) -> {

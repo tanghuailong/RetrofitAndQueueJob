@@ -153,7 +153,7 @@ public class FunctionUtil {
      * @param editText
      * @return
      */
-    public static String getScanText(EditText editText) {
+    public static String getEditText(EditText editText) {
         return editText.getText().toString().trim();
     }
 

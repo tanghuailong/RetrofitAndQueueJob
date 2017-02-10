@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">圣阳电源</string>
+    <string name="app_name">圣阳PDA</string>
     <string name="work_center_code">工位编号</string>
     <string name="scan_hint">条码编号</string>
     <string name="device_title">设备编号</string>
@@ -27,6 +27,9 @@
     <string name="order_binding">订单绑定</string>
     <string name="order_unbind">订单解绑</string>
 
+    <string name="validate_empty">不能为空</string>
+    <string name="validate_only_numchar">只能为字母数字,不能为其他字符</string>
+
 
     <!--程序中使用到的常量-->
     <string name="BASE_URL">http://192.168.0.9:8081/</string>
@@ -36,6 +39,8 @@
     <string name="DRIVER_SESSION">driver_session</string>
     <!--工人-->
     <string name="WORKER_SESSION">worker_session</string>
+    <!--工位编号-->
+    <string name="WORKCENTERCODE_SESSION">workcentercode_session</string>
     <!--订单-->
     <string name="ORDER">order</string>
     <!--设备-->
