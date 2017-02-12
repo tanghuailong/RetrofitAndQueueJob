@@ -24,6 +24,7 @@
         <activity android:name=".ui.LoginActivity"
             android:noHistory="true"
             android:excludeFromRecents="true"></activity>
+        <activity android:name=".ui.OrderActivity"></activity>
         <activity android:name=".ui.CodeScanActivity"></activity>
         <activity android:name=".ui.DeviceScanActivity"></activity>
 

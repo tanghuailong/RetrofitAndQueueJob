@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.order_bind)
     public void orderBind() {
-        Intent intent = new Intent(MainActivity.this,CodeScanActivity.class);
+        Intent intent = new Intent(MainActivity.this,OrderActivity.class);
         startActivity(intent);
     }
 

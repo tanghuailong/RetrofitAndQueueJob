@@ -156,6 +156,10 @@ public class CodeScanActivity extends AppCompatActivity {
         if(subscription == null && subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
+        //TODO 清空所有操作
+        while (!operation.empty()) {
+            operation.pop();
+        }
         SPHelper.remove(CodeScanActivity.this,getString(R.string.ORDER));
         SPHelper.remove(CodeScanActivity.this,getString(R.string.DEVICE));
     }
