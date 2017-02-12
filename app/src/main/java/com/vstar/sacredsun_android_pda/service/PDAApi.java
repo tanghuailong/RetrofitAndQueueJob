@@ -35,11 +35,5 @@ public interface PDAApi {
     @GET("staffmgt/control/clientLogout")
     Observable<HttpResult> userLoginOut(@Query("session") String session);
 
-    @GET("equipmentmgt/control/bindProductionOrder")
-    Observable<HttpResult> orderBind(@Query("session") String session,@Query("orderCode") String orderCode,@Query("orderCount") String orderCount,@Query("materialCode") String materialCode,@Query("assetsCode") String assetsCode,@Query("relCreateTime") String relCreateTime,@Query("driver") String driver,@Query("number") String number);
-
-    //TODO 订单解绑接口还未给出
-    @GET("equipmentmgt/control/bindProductionOrder")
-    Observable<HttpResult> orderUnBind();
 
 }

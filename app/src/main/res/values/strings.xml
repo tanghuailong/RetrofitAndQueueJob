@@ -33,7 +33,7 @@
 
 
     <!--程序中使用到的常量-->
-    <string name="BASE_URL">http://192.168.0.9:8081/</string>
+    <string name="BASE_URL">https://api.github.com/</string>
     <string name="IS_LOGIN">is_login</string>
     <string name="FIRST_USE">first_use</string>
     <!--司机-->
@@ -42,6 +42,7 @@
     <string name="WORKER_SESSION">worker_session</string>
     <!--工位编号-->
     <string name="WORKCENTERCODE_SESSION">workcentercode_session</string>
+    <string name="ORDER_NUMBER">order_number</string>
     <!--订单-->
     <string name="ORDER">order</string>
     <!--设备-->

@@ -5,7 +5,9 @@ import android.util.Log;
 
 import com.path.android.jobqueue.Job;
 import com.path.android.jobqueue.Params;
+import com.vstar.sacredsun_android_pda.service.GithubApi;
 import com.vstar.sacredsun_android_pda.util.queue.Priority;
+import com.vstar.sacredsun_android_pda.util.rest.HttpMethodNoRx;
 
 /**
  * Created by tanghuailong on 2017/1/12.
@@ -28,14 +30,10 @@ public class OrderJob extends Job {
 
     @Override
     public void onRun() throws Throwable {
-//        GithubApi service = HttpMethods.getInstane().getService(GithubApi.class);
-//        Call<User> call = service.getUser("tanghuailong");
-//        Response<User> response = call.execute();
-//        if(response == null || !response.isSuccessful() || response.errorBody()!=null) {
-//            throw new RuntimeException("response fail");
-//        }
-//        Log.d(LOG_TAG,response.body().toString());
-//        RxBus.getDefault().post(new UserEvent());
+
+        HttpMethodNoRx.getInstane().getService(GithubApi.class)
+                .getUser("tanghuailong").execute();
+
     }
 
     @Override

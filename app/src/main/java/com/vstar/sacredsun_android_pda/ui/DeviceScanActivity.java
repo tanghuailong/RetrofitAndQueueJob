@@ -8,7 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.path.android.jobqueue.JobManager;
+import com.vstar.sacredsun_android_pda.App;
 import com.vstar.sacredsun_android_pda.R;
+import com.vstar.sacredsun_android_pda.job.UnBindJob;
 import com.vstar.sacredsun_android_pda.util.other.CodeType;
 import com.vstar.sacredsun_android_pda.util.other.SPHelper;
 import com.vstar.sacredsun_android_pda.util.other.FunctionUtil;
@@ -35,11 +38,14 @@ public class DeviceScanActivity extends AppCompatActivity {
     @BindView(R.id.txt_manual)
     TextView txtManual;
 
+    private JobManager jobManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_scan);
         ButterKnife.bind(this);
+        jobManager = App.getInstance().getJobManager();
     }
 
     @OnClick(R.id.btn_commit)
@@ -48,7 +54,8 @@ public class DeviceScanActivity extends AppCompatActivity {
         CodeType result = FunctionUtil.judgeCodeNumber(scanResult);
 
         DialogInterface.OnClickListener deviceListener = (dialog, which) -> {
-            //TODO 做一些网络处理
+            //订单解绑
+            jobManager.addJobInBackground(UnBindJob.create().setAssetsCode(scanResult));
         };
 
         DialogInterface.OnClickListener invalidListener = (dialog, which) -> {

@@ -20,6 +20,11 @@ import android.widget.TextView;
 
 import com.vstar.sacredsun_android_pda.R;
 
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
+
+import java.util.Locale;
+
 /**
  * 一些功能的工具类
  */
@@ -37,6 +42,8 @@ public class FunctionUtil {
     private static final int materialNumberBegin = 10;
     //物料编号的前缀
     private static final String materialPrefix = "100";
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
     /**
      * 是否是有效的工号
@@ -268,6 +275,9 @@ public class FunctionUtil {
             ((TextView) view.findViewById(R.id.snackbar_text)).setTextColor(hint);
         }
         snackbar.show();
+    }
 
+    public static String getCurrentTimeStr() {
+       return LocalDateTime.now().format(formatter);
     }
 }
