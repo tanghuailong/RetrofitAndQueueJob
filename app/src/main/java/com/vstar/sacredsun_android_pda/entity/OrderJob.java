@@ -8,6 +8,7 @@ import com.path.android.jobqueue.Params;
 import com.vstar.sacredsun_android_pda.service.GithubApi;
 import com.vstar.sacredsun_android_pda.util.queue.Priority;
 import com.vstar.sacredsun_android_pda.util.rest.HttpMethodNoRx;
+import com.vstar.sacredsun_android_pda.util.rxjava.RxBus;
 
 /**
  * Created by tanghuailong on 2017/1/12.
@@ -33,6 +34,7 @@ public class OrderJob extends Job {
 
         HttpMethodNoRx.getInstane().getService(GithubApi.class)
                 .getUser("tanghuailong").execute();
+        RxBus.getDefault().post(new RunResult(0,"测试"));
 
     }
 

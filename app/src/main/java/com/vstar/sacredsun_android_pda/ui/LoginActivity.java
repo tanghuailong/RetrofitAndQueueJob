@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private static String workCenterCode = "";
     private int next_login_user = ConstantPDA.WORKER;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

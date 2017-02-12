@@ -9,21 +9,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.path.android.jobqueue.JobManager;
 import com.vstar.sacredsun_android_pda.App;
 import com.vstar.sacredsun_android_pda.R;
+import com.vstar.sacredsun_android_pda.entity.RunResult;
 import com.vstar.sacredsun_android_pda.job.BindJob;
 import com.vstar.sacredsun_android_pda.util.other.CodeType;
 import com.vstar.sacredsun_android_pda.util.other.FunctionUtil;
 import com.vstar.sacredsun_android_pda.util.other.SPHelper;
 import com.vstar.sacredsun_android_pda.util.other.StatusCompoment;
+import com.vstar.sacredsun_android_pda.util.rxjava.RxBus;
 
 import java.util.Stack;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by tanghuailong on 2017/1/20.
@@ -49,6 +54,7 @@ public class CodeScanActivity extends AppCompatActivity {
     Button btnScanAgain;
 
     private JobManager jobManager;
+    private Subscription subscription;
 
     //进行过的操作
     private Stack<Pair<String,String>> operation = new Stack<Pair<String,String>>();
@@ -139,14 +145,29 @@ public class CodeScanActivity extends AppCompatActivity {
         FunctionUtil.changeToManualInput(CodeScanActivity.this,scanCode);
     }
 
+
+
     /**
      * 为了和Operation队列保持一致，退出时要清除数据保存的数据
      */
     @Override
     protected void onStop() {
         super.onStop();
+        if(subscription == null && subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
         SPHelper.remove(CodeScanActivity.this,getString(R.string.ORDER));
         SPHelper.remove(CodeScanActivity.this,getString(R.string.DEVICE));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        subscription = RxBus.getDefault().tObservable(RunResult.class)
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe((r) -> {
+                    Toast.makeText(CodeScanActivity.this,r.getMessage(),Toast.LENGTH_LONG).show();
+                });
     }
 
     private BindJob createBindJob(String orderNumber) {
@@ -164,4 +185,6 @@ public class CodeScanActivity extends AppCompatActivity {
         return bindJob;
 
     }
+
+
 }
