@@ -17,6 +17,7 @@ import com.vstar.sacredsun_android_pda.entity.RunResult;
 import com.vstar.sacredsun_android_pda.job.UnBindJob;
 import com.vstar.sacredsun_android_pda.util.other.CodeType;
 import com.vstar.sacredsun_android_pda.util.other.FunctionUtil;
+import com.vstar.sacredsun_android_pda.util.other.SPHelper;
 import com.vstar.sacredsun_android_pda.util.rxjava.RxBus;
 
 import butterknife.BindView;
@@ -65,8 +66,9 @@ public class DeviceScanActivity extends AppCompatActivity {
         CodeType result = FunctionUtil.judgeCodeNumber(scanResult);
 
         DialogInterface.OnClickListener deviceListener = (dialog, which) -> {
+            String session = (String) SPHelper.get(DeviceScanActivity.this,getString(R.string.WORKER_SESSION),"");
             //订单解绑
-            jobManager.addJobInBackground(UnBindJob.create().setAssetsCode(scanResult));
+            jobManager.addJobInBackground(UnBindJob.create().setAssetsCode(scanResult).setSession(session));
         };
 
         DialogInterface.OnClickListener invalidListener = (dialog, which) -> {
@@ -101,6 +103,8 @@ public class DeviceScanActivity extends AppCompatActivity {
                 .subscribe((r) -> {
                     Log.d(LOG_TAG,r.getMessage());
                     Toast.makeText(DeviceScanActivity.this,r.getMessage(),Toast.LENGTH_LONG).show();
+                },(e) -> {
+                    Log.e(LOG_TAG,"some error occur",e);
                 });
     }
     @Override

@@ -54,6 +54,8 @@ dependencies {
     //网络调试
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
+    //事件传输总线
+    compile 'org.greenrobot:eventbus:3.0.0'
     //注入框架
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'

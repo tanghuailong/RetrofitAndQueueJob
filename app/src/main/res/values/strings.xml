@@ -18,7 +18,7 @@
     <string name="workername">工人账户</string>
     <string name="drivername">司机账户</string>
     <string name="password">密码</string>
-    <string name="loginhint">忘记密码?我也很为难呀!</string>
+    <string name="loginhint">忘记密码?请联系管理员</string>
     <string name="device_scan_complete">已获得设备编号</string>
     <string name="order_scan_complete">已获得订单编号</string>
     <string name="device_scan_incomplete">未获得设备编号</string>
@@ -27,16 +27,18 @@
     <string name="start_binding">开始绑定</string>
     <string name="order_binding">订单绑定</string>
     <string name="order_unbind">订单解绑</string>
+    <string name="order_number">订单数量:&#160;</string>
 
     <string name="validate_empty">不能为空</string>
     <string name="validate_only_numchar">只能为字母数字,不能为其他字符</string>
-    <string name="login_fail">登陆失败,请检查网络</string>
+    <string name="login_fail">登陆失败</string>
 
 
     <!--程序中使用到的常量-->
-    <string name="BASE_URL">https://api.github.com/</string>
+    <string name="BASE_URL">http://192.168.0.9:8081/</string>
     <string name="IS_LOGIN">is_login</string>
     <string name="FIRST_USE">first_use</string>
+    <string name="NOT_HANDLE">not_handle</string>
     <!--司机-->
     <string name="DRIVER_SESSION">driver_session</string>
     <!--工人-->

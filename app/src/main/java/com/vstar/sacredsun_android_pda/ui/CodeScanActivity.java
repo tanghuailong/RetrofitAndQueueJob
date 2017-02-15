@@ -1,6 +1,7 @@
 package com.vstar.sacredsun_android_pda.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
@@ -9,18 +10,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.path.android.jobqueue.JobManager;
 import com.vstar.sacredsun_android_pda.App;
 import com.vstar.sacredsun_android_pda.R;
-import com.vstar.sacredsun_android_pda.entity.RunResult;
 import com.vstar.sacredsun_android_pda.job.BindJob;
 import com.vstar.sacredsun_android_pda.util.other.CodeType;
 import com.vstar.sacredsun_android_pda.util.other.FunctionUtil;
 import com.vstar.sacredsun_android_pda.util.other.SPHelper;
 import com.vstar.sacredsun_android_pda.util.other.StatusCompoment;
-import com.vstar.sacredsun_android_pda.util.rxjava.RxBus;
 
 import java.util.Stack;
 
@@ -28,7 +26,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by tanghuailong on 2017/1/20.
@@ -52,6 +49,8 @@ public class CodeScanActivity extends AppCompatActivity {
     TextView deviceSignTxt;
     @BindView(R.id.btn_scan_again)
     Button btnScanAgain;
+    @BindView(R.id.order_actual_number)
+    TextView orderActualNumber;
 
     private JobManager jobManager;
     private Subscription subscription;
@@ -69,7 +68,6 @@ public class CodeScanActivity extends AppCompatActivity {
         jobManager = App.getInstance().getJobManager();
     }
 
-
     @OnClick(R.id.btn_commit)
     public void commitMessage() {
         String scanResult = FunctionUtil.getEditText(scanCode);
@@ -78,7 +76,9 @@ public class CodeScanActivity extends AppCompatActivity {
         switch (result) {
             case ORDER:
                 DialogInterface.OnClickListener orderListener= (dialog,which) -> {
-                    operation.push(Pair.create(getString(R.string.ORDER),getString(R.string.ORDER_DESC)));
+                    if(operation.isEmpty()||!operation.peek().first.equals(getString(R.string.ORDER))) {
+                        operation.push(Pair.create(getString(R.string.ORDER), getString(R.string.ORDER_DESC)));
+                    }
                     FunctionUtil.changeStateCompoment(CodeScanActivity.this,orderSignImg,orderSignTxt, StatusCompoment.ORDER_COMPLEMENT);
                     SPHelper.putAndApply(CodeScanActivity.this,getString(R.string.ORDER),scanResult);
                     if(operation.size() == 1) {
@@ -87,14 +87,17 @@ public class CodeScanActivity extends AppCompatActivity {
                     scanCode.getText().clear();
                     if(operation.size() == 2) {
                         //当两次操作都处理完成之后,提交到队列中去
-                        jobManager.addJobInBackground(createBindJob(scanResult));
+                        jobManager.addJobInBackground(createBindJob());
+                        jumpToMain();
                     }
                 };
                 FunctionUtil.showDialog(CodeScanActivity.this,"订单",R.drawable.submit,"扫描结果:"+scanResult+" 确认提交?",orderListener);
                 break;
             case DEVICE:
                 DialogInterface.OnClickListener deviceListener= (dialog,which)  -> {
-                    operation.push(Pair.create(getString(R.string.DEVICE),getString(R.string.DEVICE_DESC)));
+                    if(operation.isEmpty()||!operation.peek().first.equals(getString(R.string.DEVICE))) {
+                        operation.push(Pair.create(getString(R.string.DEVICE), getString(R.string.DEVICE_DESC)));
+                    }
                     FunctionUtil.changeStateCompoment(CodeScanActivity.this,deviceSignImg,deviceSignTxt, StatusCompoment.DEVICE_COMPLEMENT);
                     SPHelper.putAndApply(CodeScanActivity.this,getString(R.string.DEVICE),scanResult);
                     if(operation.size() == 1) {
@@ -102,7 +105,8 @@ public class CodeScanActivity extends AppCompatActivity {
                     }
                     scanCode.getText().clear();
                     if(operation.size() == 2) {
-                        jobManager.addJobInBackground(createBindJob(scanResult));
+                        jobManager.addJobInBackground(createBindJob());
+                        jumpToMain();
                     }
                 };
                 FunctionUtil.showDialog(CodeScanActivity.this,"设备",R.drawable.submit,"扫描结果:"+scanResult+" 确认提交?",deviceListener);
@@ -119,6 +123,10 @@ public class CodeScanActivity extends AppCompatActivity {
      */
     @OnClick(R.id.btn_scan_again)
     public void scanAgain() {
+        if(!scanCode.getText().toString().isEmpty()) {
+            scanCode.getText().clear();
+            return;
+        }
         DialogInterface.OnClickListener againListener= (dialog,which) -> {
             if(!operation.isEmpty()) {
                 btnCommit.setText("确定");
@@ -145,18 +153,29 @@ public class CodeScanActivity extends AppCompatActivity {
         FunctionUtil.changeToManualInput(CodeScanActivity.this,scanCode);
     }
 
+    private void jumpToMain() {
 
-
+        Intent intent  = new Intent(CodeScanActivity.this,MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
     /**
      * 为了和Operation队列保持一致，退出时要清除数据保存的数据
      */
     @Override
     protected void onStop() {
         super.onStop();
-        if(subscription == null && subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-        //TODO 清空所有操作
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        orderActualNumber.setText((String)SPHelper.get(CodeScanActivity.this,getString(R.string.ORDER_NUMBER),""));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         while (!operation.empty()) {
             operation.pop();
         }
@@ -164,17 +183,9 @@ public class CodeScanActivity extends AppCompatActivity {
         SPHelper.remove(CodeScanActivity.this,getString(R.string.DEVICE));
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        subscription = RxBus.getDefault().tObservable(RunResult.class)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe((r) -> {
-                    Toast.makeText(CodeScanActivity.this,r.getMessage(),Toast.LENGTH_LONG).show();
-                });
-    }
+    private BindJob createBindJob() {
 
-    private BindJob createBindJob(String orderNumber) {
+        String orderNumber = (String)SPHelper.get(CodeScanActivity.this,getString(R.string.ORDER),"");
 
         BindJob bindJob = BindJob.create()
                 .setAssetsCode((String)SPHelper.get(CodeScanActivity.this,getString(R.string.DEVICE),""))
@@ -182,7 +193,7 @@ public class CodeScanActivity extends AppCompatActivity {
                 .setDriverSession((String)SPHelper.get(CodeScanActivity.this,getString(R.string.DRIVER_SESSION),""))
                 .setOrderCount((String)SPHelper.get(CodeScanActivity.this,getString(R.string.ORDER_NUMBER),""))
                 .setOrderCode(FunctionUtil.getOrder(orderNumber))
-                .setMaterialCode(FunctionUtil.getOrder(orderNumber))
+                .setMaterialCode(FunctionUtil.getMaterailNumber(orderNumber))
                 .setNumber(FunctionUtil.getSerialNumber(orderNumber))
                 .setRelCreateTime(FunctionUtil.getCurrentTimeStr());
 

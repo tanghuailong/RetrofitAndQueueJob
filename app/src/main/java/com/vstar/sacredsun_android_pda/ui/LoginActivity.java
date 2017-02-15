@@ -48,6 +48,9 @@ public class LoginActivity extends AppCompatActivity {
     private static String workCenterCode = "";
     private int next_login_user = ConstantPDA.WORKER;
 
+    private TextWatcher watcherName = null;
+    private TextWatcher watcherPwd = null;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
         workCenterCode =(String) SPHelper.get(this,getString(R.string.WORKCENTERCODE_SESSION),"01");
 
-        editText_user.addTextChangedListener(new TextWatcher() {
+        watcherName = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -72,8 +75,9 @@ public class LoginActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 validateEditText(s.toString(),usernameLayout);
             }
-        });
-        editText_pwd.addTextChangedListener(new TextWatcher() {
+        };
+
+        watcherPwd  = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -88,7 +92,10 @@ public class LoginActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 validateEditText(s.toString(),passwordLayout);
             }
-        });
+        };
+
+        editText_user.addTextChangedListener(watcherName);
+        editText_pwd.addTextChangedListener(watcherPwd);
     }
 
     /**
@@ -120,6 +127,7 @@ public class LoginActivity extends AppCompatActivity {
                     },() -> {
 
                     });
+
         }else {
             if(isEmptyName) {
                 usernameLayout.setErrorEnabled(true);
@@ -146,14 +154,22 @@ public class LoginActivity extends AppCompatActivity {
     private void workerLoginSuccess(String session) {
         if(!TextUtils.isEmpty(session)) {
             SPHelper.putAndApply(LoginActivity.this,getString(R.string.WORKER_SESSION),session);
+            editText_user.removeTextChangedListener(watcherName);
+            editText_pwd.removeTextChangedListener(watcherPwd);
+            editText_user.clearFocus();
+            editText_pwd.clearFocus();
             editText_user.getText().clear();
             editText_pwd.getText().clear();
-            editText_user.setHint(getString(R.string.login_driver));
+            usernameLayout.setHint(getString(R.string.login_driver));
+            btnLogin.setText(getString(R.string.login_driver));
+            editText_user.addTextChangedListener(watcherName);
+            editText_pwd.addTextChangedListener(watcherPwd);
             next_login_user = ConstantPDA.DRIVER;
         }
     }
     private void driverLoginSuccess(String session) {
         if(!TextUtils.isEmpty(session)) {
+            SPHelper.putAndApply(LoginActivity.this,getString(R.string.IS_LOGIN),true);
             SPHelper.putAndApply(LoginActivity.this,getString(R.string.DRIVER_SESSION),session);
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
             startActivity(intent);

@@ -17,5 +17,5 @@ public interface PDAApiNoRx {
 
     //订单解绑
     @GET("equipmentmgt/control/unbindProductionOrder")
-    Call<HttpResult> orderUnBind(@Query("assetsCode")String assetsCode);
+    Call<HttpResult> orderUnBind(@Query("assetsCode")String assetsCode,@Query("session")String session);
 }

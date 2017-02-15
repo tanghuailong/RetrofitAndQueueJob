@@ -35,7 +35,7 @@ public class FunctionUtil {
     //订单编号的长度
     private static final int orderNumberLength = 19;
     //订单号结束位置
-    private static final int orderEnd = 9;
+    private static final int orderEnd = 10;
     //流水号开始位置
     private static final int serialNumberBegin = 16;
     //物料编码开始位置
@@ -45,6 +45,7 @@ public class FunctionUtil {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
+    private static final int maxOrderNumber = 7000;
     /**
      * 是否是有效的工号
      *
@@ -126,7 +127,7 @@ public class FunctionUtil {
      * @return
      */
     public static String getMaterailNumber(String code) {
-        return materialPrefix + code.substring(materialNumberBegin, materialNumberBegin + 6);
+        return code.substring(materialNumberBegin, materialNumberBegin + 6);
     }
 
     /**
@@ -179,6 +180,22 @@ public class FunctionUtil {
         return editText.getText().toString().trim();
     }
 
+    /**
+     * 检测是否未一个合法的订单数量
+     * @param number
+     * @return
+     */
+    public static boolean isVaildInteger(String number) {
+        try {
+            int num = Integer.parseInt(number);
+            if(num > maxOrderNumber){
+                return false;
+            }
+            return true;
+        }catch (NumberFormatException e) {
+            return false;
+        }
+    }
     /**
      * 显示Dialog
      *

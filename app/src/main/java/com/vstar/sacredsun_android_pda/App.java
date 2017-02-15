@@ -3,8 +3,8 @@ package com.vstar.sacredsun_android_pda;
 import android.app.Application;
 import android.util.Log;
 
-
 import com.facebook.stetho.Stetho;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.path.android.jobqueue.JobManager;
 import com.path.android.jobqueue.config.Configuration;
 import com.path.android.jobqueue.log.CustomLogger;
@@ -29,6 +29,8 @@ public class App extends Application {
         Stetho.initializeWithDefaults(this);
         //之前的配置方式
         //AppJobManager.getJobManager(this);
+        //初始化时间工具类
+        AndroidThreeTen.init(this);
         configureJobManager();
     }
 

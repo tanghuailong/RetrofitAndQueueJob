@@ -7,6 +7,7 @@ import android.support.v7.widget.CardView;
 import android.widget.TextView;
 
 import com.vstar.sacredsun_android_pda.R;
+import com.vstar.sacredsun_android_pda.service.HintService;
 import com.vstar.sacredsun_android_pda.util.other.SPHelper;
 import com.vstar.sacredsun_android_pda.util.other.FunctionUtil;
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        startHintService();
     }
 
 
@@ -65,5 +67,10 @@ public class MainActivity extends AppCompatActivity {
     public void orderUnbind() {
         Intent intent = new Intent(MainActivity.this,DeviceScanActivity.class);
         startActivity(intent);
+    }
+
+    private void startHintService() {
+        Intent intent = new Intent(MainActivity.this, HintService.class);
+        startService(intent);
     }
 }
