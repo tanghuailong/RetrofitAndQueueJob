@@ -4,27 +4,22 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.path.android.jobqueue.JobManager;
 import com.vstar.sacredsun_android_pda.App;
 import com.vstar.sacredsun_android_pda.R;
-import com.vstar.sacredsun_android_pda.entity.RunResult;
 import com.vstar.sacredsun_android_pda.job.UnBindJob;
 import com.vstar.sacredsun_android_pda.util.other.CodeType;
 import com.vstar.sacredsun_android_pda.util.other.FunctionUtil;
 import com.vstar.sacredsun_android_pda.util.other.SPHelper;
-import com.vstar.sacredsun_android_pda.util.rxjava.RxBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by tanghuailong on 2017/1/20.
@@ -98,21 +93,12 @@ public class DeviceScanActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        subscription = RxBus.getDefault().tObservable(RunResult.class)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe((r) -> {
-                    Log.d(LOG_TAG,r.getMessage());
-                    Toast.makeText(DeviceScanActivity.this,r.getMessage(),Toast.LENGTH_LONG).show();
-                },(e) -> {
-                    Log.e(LOG_TAG,"some error occur",e);
-                });
+
     }
     @Override
     protected void onStop() {
         super.onStop();
-        if(subscription!=null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
+
 //        SPHelper.remove(DeviceScanActivity.this,getString(R.string.ORDER_UNBIND));
     }
 
