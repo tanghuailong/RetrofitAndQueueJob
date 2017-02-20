@@ -21,8 +21,9 @@ import com.vstar.sacredsun_android_pda.util.rest.HttpMethodNoRx;
  */
 public class BindJob extends Job {
 
+
     private static final String LOG_TAG = "BindJob";
-    Context context = null;
+    private transient  Context  context = null;
 
     private String workerSession="";
     private String orderCode="";

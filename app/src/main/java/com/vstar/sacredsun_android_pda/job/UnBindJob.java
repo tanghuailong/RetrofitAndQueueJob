@@ -22,7 +22,7 @@ import com.vstar.sacredsun_android_pda.util.rest.HttpMethodNoRx;
 public class UnBindJob extends Job{
 
     private static final String LOG_TAG = "UnBindJob";
-    private Context context = App.getInstance();
+    private transient Context context = App.getInstance();
 
     private String assetsCode = "";
     private String session = "";
