@@ -46,6 +46,8 @@ public class FunctionUtil {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
     private static final int maxOrderNumber = 7000;
+
+
     /**
      * 是否是有效的工号
      *
@@ -297,4 +299,6 @@ public class FunctionUtil {
     public static String getCurrentTimeStr() {
        return LocalDateTime.now().format(formatter);
     }
+
+
 }

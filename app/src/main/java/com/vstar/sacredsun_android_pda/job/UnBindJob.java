@@ -1,12 +1,12 @@
 package com.vstar.sacredsun_android_pda.job;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.path.android.jobqueue.Job;
 import com.path.android.jobqueue.Params;
 import com.vstar.sacredsun_android_pda.App;
 import com.vstar.sacredsun_android_pda.service.PDAApiNoRx;
+import com.vstar.sacredsun_android_pda.util.other.NotificationHelper;
 import com.vstar.sacredsun_android_pda.util.other.SPHelper;
 import com.vstar.sacredsun_android_pda.util.queue.Priority;
 import com.vstar.sacredsun_android_pda.util.rest.ApiException;
@@ -22,7 +22,6 @@ import com.vstar.sacredsun_android_pda.util.rest.HttpMethodNoRx;
 public class UnBindJob extends Job{
 
     private static final String LOG_TAG = "UnBindJob";
-    private transient Context context = App.getInstance();
 
     private String assetsCode = "";
     private String session = "";
@@ -50,7 +49,7 @@ public class UnBindJob extends Job{
     public void onAdded() {
         Log.d(LOG_TAG,"add job to queue");
 //        RxBus.getDefault().post(new RunResult(0,"添加到队列"));
-        int notHandleNumber = (int) SPHelper.get(context,"not_handle",0);
+        int notHandleNumber = (int) SPHelper.get(App.getInstance(),"not_handle",0);
         SPHelper.putAndApply(App.getInstance(),"not_handle",notHandleNumber+1);
     }
 
@@ -61,7 +60,8 @@ public class UnBindJob extends Job{
                 .execute();
         Log.d(LOG_TAG,"job execute success");
 //        RxBus.getDefault().post(new RunResult(1,"订单绑定成功"));
-        int notHandleNumber = (int)SPHelper.get(context,"not_handle",0);
+        NotificationHelper.showNotification(assetsCode,1);
+        int notHandleNumber = (int)SPHelper.get(App.getInstance(),"not_handle",0);
         if(notHandleNumber > 0) {
             SPHelper.putAndApply(App.getInstance(), "not_handle", notHandleNumber - 1);
         }
@@ -69,7 +69,7 @@ public class UnBindJob extends Job{
 
     @Override
     protected void onCancel() {
-        int notHandleNumber = (int)SPHelper.get(context,"not_handle",0);
+        int notHandleNumber = (int)SPHelper.get(App.getInstance(),"not_handle",0);
         if(notHandleNumber > 0) {
             SPHelper.putAndApply(App.getInstance(), "not_handle", notHandleNumber - 1);
         }
