@@ -67,6 +67,7 @@ public class SettingActivity extends AppCompatActivity {
             if(result.matches("^[a-zA-Z0-9]+$")) {
                 DialogInterface.OnClickListener workCenterListener = (dialog, which) -> {
                     SPHelper.putAndApply(SettingActivity.this, getString(R.string.FIRST_USE), true);
+                    SPHelper.putAndApply(SettingActivity.this,getString(R.string.WORKCENTERCODE_SESSION),result);
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);
                     finish();
