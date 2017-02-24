@@ -1,6 +1,7 @@
 package com.vstar.sacredsun_android_pda.util.rest;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.vstar.sacredsun_android_pda.App;
 import com.vstar.sacredsun_android_pda.R;
@@ -31,8 +32,22 @@ public class CookieHeaderProvider implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request.Builder builder = chain.request().newBuilder();
-        String session = SPHelper.get(context,context.getString(R.string.WORKER_SESSION),"") +";"+SPHelper.get(context,context.getString(R.string.DRIVER_SESSION),"");
-        builder.addHeader("Cookie", session);
+        String result = "";
+        String workerSession = (String) SPHelper.get(context,context.getString(R.string.WORKER_SESSION),"");
+        String driverSession = (String) SPHelper.get(context,context.getString(R.string.DRIVER_SESSION),"");
+        if(workerSession.isEmpty() || driverSession.isEmpty()) {
+            if(!workerSession.isEmpty()) {
+                result = "worker="+workerSession;
+            }
+            if(!driverSession.isEmpty()) {
+                result = "driver="+driverSession;
+            }
+        }else {
+            result = "driver="+workerSession+";"+"worker="+driverSession;
+        }
+        if(!TextUtils.isEmpty(result)) {
+            builder.addHeader("Cookie", result);
+        }
         return chain.proceed(builder.build());
     }
 }

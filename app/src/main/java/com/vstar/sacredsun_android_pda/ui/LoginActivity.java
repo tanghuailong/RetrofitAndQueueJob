@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.username)
     EditText editText_user;
     @BindView(R.id.password)
-    EditText editText_pwd;
+    TextInputEditText editText_pwd;
     @BindView(R.id.username_layout)
     TextInputLayout usernameLayout;
     @BindView(R.id.password_layout)

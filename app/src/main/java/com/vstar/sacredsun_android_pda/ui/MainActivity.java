@@ -7,6 +7,7 @@ import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vstar.sacredsun_android_pda.R;
 import com.vstar.sacredsun_android_pda.service.HintService;
@@ -48,6 +49,12 @@ public class MainActivity extends AppCompatActivity {
         String workerSession = (String) SPHelper.get(MainActivity.this,getString(R.string.WORKER_SESSION),"");
         String driverSession = (String) SPHelper.get(MainActivity.this,getString(R.string.DRIVER_SESSION),"");
 
+        if(TextUtils.isEmpty(workerSession) && TextUtils.isEmpty(driverSession)) {
+            SPHelper.putAndApply(MainActivity.this,getString(R.string.IS_LOGIN),false);
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
         //工人退出
         if(!TextUtils.isEmpty(workerSession)) {
             HttpMethods.getInstane().getService(PDAApi.class)
@@ -59,30 +66,35 @@ public class MainActivity extends AppCompatActivity {
                         String session1 = (String) SPHelper.get(MainActivity.this,getString(R.string.WORKER_SESSION),"");
                         String session2 = (String) SPHelper.get(MainActivity.this,getString(R.string.DRIVER_SESSION),"");
                         if(TextUtils.isEmpty(session1) && TextUtils.isEmpty(session2)) {
+                            SPHelper.putAndApply(MainActivity.this,getString(R.string.IS_LOGIN),false);
                             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                             startActivity(intent);
                             finish();
                         }
                     },(e) -> {
                         Log.d(LOG_TAG,"some error happen",e);
+                        Toast.makeText(MainActivity.this,"工人退出失败",Toast.LENGTH_SHORT).show();
                     });
         }
         //司机退出
-        if(TextUtils.isEmpty(driverSession)) {
+        if(!TextUtils.isEmpty(driverSession)) {
             HttpMethods.getInstane().getService(PDAApi.class)
                     .userLoginOut(driverSession)
+                    .compose(RxHelper.io_main())
                     .subscribe((r) -> {
                         SPHelper.remove(MainActivity.this,getString(R.string.DRIVER_SESSION));
 
                         String session1 = (String) SPHelper.get(MainActivity.this,getString(R.string.WORKER_SESSION),"");
                         String session2 = (String) SPHelper.get(MainActivity.this,getString(R.string.DRIVER_SESSION),"");
                         if(TextUtils.isEmpty(session1) && TextUtils.isEmpty(session2)) {
+                            SPHelper.putAndApply(MainActivity.this,getString(R.string.IS_LOGIN),false);
                             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                             startActivity(intent);
                             finish();
                         }
                     },(e) -> {
                         Log.d(LOG_TAG,"some error happen",e);
+                        Toast.makeText(MainActivity.this,"司机退出失败",Toast.LENGTH_SHORT).show();
                     });
         }
 

@@ -4,7 +4,7 @@
 
 
     <!--全屏的theme-->
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
+    <style name="custom.fullscreen" parent="@style/Theme.AppCompat.Light">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
@@ -19,10 +19,10 @@
         <item name="android:icon">@color/icons</item>
         <item name="android:divider">@color/divider</item>
         <item name="android:textColorHint">@color/normal_txt_color</item>
-        <item name="colorButtonNormal">@color/buttonnormal</item>
+        <!--<item name="colorButtonNormal">@color/buttonnormal</item>-->
     </style>
 
-    <style name="SplashTheme" parent="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+    <style name="SplashTheme" parent="@style/custom.fullscreen">
         <item name="android:windowBackground">@drawable/bg_spalsh</item>
     </style>
 
