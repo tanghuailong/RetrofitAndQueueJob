@@ -35,7 +35,7 @@
 
 
     <!--程序中使用到的常量-->
-    <string name="BASE_URL">http://10.100.172.187:8081/</string>
+    <string name="BASE_URL">http://192.168.0.9:8081/</string>
     <string name="IS_LOGIN">is_login</string>
     <string name="FIRST_USE">first_use</string>
     <string name="NOT_HANDLE">not_handle</string>
