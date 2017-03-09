@@ -85,12 +85,10 @@ public class HttpMethods {
 
     private HttpMethods() {
     }
-
    //单例模式
     public static class SingleHolder {
         private static final HttpMethods INSTANCE = new HttpMethods();
     }
-
     public static HttpMethods getInstane(){
         return SingleHolder.INSTANCE;
     }
@@ -98,12 +96,14 @@ public class HttpMethods {
 ```
 * 其次通过在OKHttp里面添加拦截器(责任链模式)的方式，实现cookie的添加。另外采用了类似于模板模式，往Retrofit的Builder里面添加工厂类。
  * 添加cookie拦截器(CookieHeaderProvider)
+
 ```
 builder.addNetworkInterceptor(new StethoInterceptor()).
                     addInterceptor(new CookieHeaderProvider(context)).
                     connectTimeout(DEFAULT_TIME, TimeUnit.SECONDS);
 ```
  * 添加自定义的异常处理的工厂类(ResponseConvertFactory)
+
 ```
  retrofit = new Retrofit.Builder()
                 .client(getUnsafeOkHttpClient())
@@ -113,6 +113,7 @@ builder.addNetworkInterceptor(new StethoInterceptor()).
                 .build();
 ```
 <br>
+
 
 > jackOptions 加 annotationProcessor 是个深坑。。。慎重
 
