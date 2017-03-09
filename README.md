@@ -17,6 +17,7 @@
 <br>
 
 * 基本的访问网络的逻辑
+
 ```
  HttpMethods.getInstane().getService(PDAApi.class)
                     .userLoginOut(driverSession)
@@ -96,14 +97,12 @@ public class HttpMethods {
 ```
 * 其次通过在OKHttp里面添加拦截器(责任链模式)的方式，实现cookie的添加。另外采用了类似于模板模式，往Retrofit的Builder里面添加工厂类。
  * 添加cookie拦截器(CookieHeaderProvider)
-
 ```
 builder.addNetworkInterceptor(new StethoInterceptor()).
                     addInterceptor(new CookieHeaderProvider(context)).
                     connectTimeout(DEFAULT_TIME, TimeUnit.SECONDS);
 ```
- * 添加自定义的异常处理的工厂类(ResponseConvertFactory)
-
+  * 添加自定义的异常处理的工厂类(ResponseConvertFactory)
 ```
  retrofit = new Retrofit.Builder()
                 .client(getUnsafeOkHttpClient())
