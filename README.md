@@ -8,4 +8,4 @@
 这个项目全部内容在dev分支,master分支使用了google play的服务，导致有时候会出现崩溃的情况
 因为已经在5.0以上测试可以使用，所以master分支被保存下来。但是圣阳项目采用的是dev分支
 
-[请点击这里查看dev分支](ihttps://code.tongbaner.com/sacredsun/sacredsun-android-pda/tree/dev)
+[请点击这里查看dev分支](https://code.tongbaner.com/sacredsun/sacredsun-android-pda/tree/dev)
