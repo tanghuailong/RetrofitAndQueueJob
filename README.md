@@ -6,9 +6,7 @@
 * 通过stetho网络调试(已完成)
 * 通过RxJava 实现事件总线 RxBus(已完成)
 
-
----
-
+----
 #### Android PDA 项目说明
 > **存在的的问题**
 * Activity 的职责过于臃肿，基本上所有业务逻辑都处于Activity里面。`MVP`+`DI`(依赖注入)是一个很好的解决办法，可惜自己力有未逮
@@ -115,6 +113,8 @@ builder.addNetworkInterceptor(new StethoInterceptor()).
                 .build();
 ```
 <br>
+
+> jackOptions 加 annotationProcessor 是个深坑。。。慎重
 
 
 [1]:https://github.com/square/retrofit "retrofit"
