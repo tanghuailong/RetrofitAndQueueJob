@@ -113,6 +113,90 @@ builder.addNetworkInterceptor(new StethoInterceptor()).
                 .baseUrl(context.getString(R.string.BASE_URL))
                 .build();
 ```
+
+* https的处理，将会信任所有证书，防止请求https链接的时候报SSL相关的错误
+
+```
+/**
+     * 对SSL连接不进行验证
+     * @return
+     */
+    private static OkHttpClient getUnsafeOkHttpClient() {
+        try {
+            // 创建一个不验证证书的管理者
+            final TrustManager[] trustAllCerts = new TrustManager[] {
+                    new X509TrustManager() {
+                        @Override
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                        }
+                        @Override
+                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                        }
+                        @Override
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                            return new java.security.cert.X509Certificate[]{};
+                        }
+                    }
+            };
+          // 按照所有信任的管理者
+            final SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            // 创建一个sslSocketFactory
+            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+            X509TrustManager trustManager = Platform.get().trustManager(sslSocketFactory);
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.sslSocketFactory(sslSocketFactory,trustManager);
+            builder.hostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
+            builder.addNetworkInterceptor(new StethoInterceptor()).
+                    addInterceptor(new CookieHeaderProvider(context)).
+                    connectTimeout(DEFAULT_TIME, TimeUnit.SECONDS);
+
+            OkHttpClient okHttpClient = builder.build();
+            return okHttpClient;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+```
+* 关于cookie的处理，将会在每次请求的时候，在请求头添加一个cookie
+
+```
+public class CookieHeaderProvider implements Interceptor {
+
+    public static final  String PREF_COOKIES = "PREF_COOKIES";
+    private Context context  = App.getInstance();
+
+    public CookieHeaderProvider(Context context) {
+        this.context = context;
+    }
+    @Override
+    public Response intercept(Chain chain) throws IOException {
+        Request.Builder builder = chain.request().newBuilder();
+        String result = "";
+        String workerSession = (String) SPHelper.get(context,context.getString(R.string.WORKER_SESSION),"");
+        String driverSession = (String) SPHelper.get(context,context.getString(R.string.DRIVER_SESSION),"");
+        if(workerSession.isEmpty() || driverSession.isEmpty()) {
+            if(!workerSession.isEmpty()) {
+                result = "worker="+workerSession;
+            }
+            if(!driverSession.isEmpty()) {
+                result = "driver="+driverSession;
+            }
+        }else {
+            result = "driver="+workerSession+";"+"worker="+driverSession;
+        }
+        if(!TextUtils.isEmpty(result)) {
+            builder.addHeader("Cookie", result);
+        }
+        return chain.proceed(builder.build());
+    }
+}
+```
 <br>
 
 
