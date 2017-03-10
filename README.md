@@ -95,7 +95,7 @@ public class HttpMethods {
     }
 }
 ```
-* 其次通过在OKHttp里面添加拦截器(责任链模式)的方式，实现cookie的添加。另外采用了类似于模板模式，往Retrofit的Builder里面添加工厂类。
+* 其次通过在OKHttp里面添加拦截器(责任链模式)的方式，实现cookie的添加。另外采用了类似于建造者模式，往Retrofit的Builder里面添加工厂类。
  * 添加cookie拦截器(CookieHeaderProvider)
 
 ```
